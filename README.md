@@ -1,4 +1,6 @@
 # Population Data Plot
+Link: https://alexjmarshall.github.io/pop-plot/
+# Requirements
 The plot should be interactive allowing the following user interactions:
 
 If a user clicks on one city, the plot displays the name of the city that was clicked on and the plotting symbol becomes highlighted.
