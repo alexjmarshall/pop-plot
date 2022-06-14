@@ -12,3 +12,5 @@ If a user clicks on a second city with the first city highlighted, the plot disp
 If two cities are highlighted, the plot should also display the distance between the cities measured in kilometres. The distance should be calculated from the longitudes and latitudes of the two cities and other reasonable assumptions.
 
 Clicking on either city removes that city’s highlighting and removes the measure of the distance.
+# Notes/Assumptions
+The distance between two selected cities is calculated using the Haversine formula, i.e. as the crow flies.
