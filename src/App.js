@@ -8,7 +8,9 @@ export default function App() {
   useEffect(() => {
 
     const fetchData = async () => {
-      const csvURL = 'https://gist.githubusercontent.com/low-sky/bec36274c4bf28619e503e2ae6a59d3a/raw/5dbc063e0a954a88df283a046f996c586ad20fb6/EgyptCities.csv';
+
+      const url = 'https://gist.githubusercontent.com/low-sky/bec36274c4bf28619e503e2ae6a59d3a/raw/5dbc063e0a954a88df283a046f996c586ad20fb6/EgyptCities.csv';
+      
       const makePlotData = datapoints => {
         // datapoint example:
         // {
@@ -18,12 +20,14 @@ export default function App() {
         //  population: "19787000"
         // }
 
-        // TODO make AREA proportional to pop. not radius of the circle
+        const radiusFromArea = area => Math.sqrt(area / Math.PI) / 50;
 
-        const data = datapoints.map(p => ({
-          x: p.lat,
-          y: p.lng,
-          r: p.population,
+        const data = datapoints
+          .filter(p => Number(p.lng) && Number(p.lat) && Number(p.population))
+          .map(p => ({
+          x: p.lng,
+          y: p.lat,
+          r: radiusFromArea(p.population),
         }));
 
         setPlotData({
@@ -35,17 +39,24 @@ export default function App() {
         });
       };
 
-      d3.csv(csvURL).then(makePlotData);
+      d3.csv(url).then(makePlotData);
     };
     
     fetchData();
   }, []);
 
+
   const [plotData, setPlotData] = useState({datasets: []});
+
+  const unit = 'Degrees';
+  const axesTitles = {
+    y: `Latitude (${unit})`,
+    x: `Longitude (${unit})`,
+  };
 
   return (
     <div className="App">
-      <Plot plotData={plotData} />
+      <Plot data={plotData} titles={axesTitles} />
     </div>
   );
 }
