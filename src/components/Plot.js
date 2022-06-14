@@ -8,7 +8,7 @@ ChartJS.register(...registerables);
 ChartJS.register(annotationPlugin);
 
 
-export const Plot = ({ data }) => {
+export const Plot = ({ data, bgColors }) => {
   
   const [selected, setSelected] = useState([]);
 
@@ -17,7 +17,9 @@ export const Plot = ({ data }) => {
     const datasets = chart.data.datasets;
     for (const [i, {data}] of datasets.entries()) {
       for (const [j] of data.entries()) {
-        datasets[i].data[j].selected = includesArray(selected, [i,j]);
+        const select = includesArray(selected, [i,j]);
+        datasets[i].data[j].selected = select;
+        datasets[i].backgroundColor[j] = select ? bgColors.highlightColor : bgColors.backgroundColor;
       }
     }
 
@@ -26,7 +28,30 @@ export const Plot = ({ data }) => {
   }
 
 
+  const drawLineBetweenCities = (selected, chart) => {
+    
+    const datasets = chart.data.datasets;
+    const cityOne = datasets[selected[0][0]].data[selected[0][1]];
+    const cityTwo = datasets[selected[1][0]].data[selected[1][1]];
+    const distanceInKm = getDistanceFromLatLonInKm(cityOne.y, cityOne.x, cityTwo.y, cityTwo.x);
+    const content = `${roundTo2DecimalPlaces(distanceInKm)}km`;
 
+    chart.options.plugins.annotation.annotations.distance = {
+      type: 'line',
+      yMin: cityOne.y,
+      yMax: cityTwo.y,
+      xMin: cityOne.x,
+      xMax: cityTwo.x,
+      borderColor: 'rgb(255, 99, 132)',
+      borderWidth: 2,
+      label: {
+        content,
+        enabled: true,
+      }
+    };
+
+    chart.update();
+  };
 
 
   const plotClick = (evt, elm) => {
@@ -55,6 +80,7 @@ export const Plot = ({ data }) => {
     while (selected.length > 2) selected.shift();
     syncSelected(selected, chart);
 
+    drawLineBetweenCities(selected, chart);
   };
 
 
