@@ -7,13 +7,18 @@ import { radiusFromArea } from "./Utils";
 export default function App() {
   
   const [plotData, setPlotData] = useState({datasets: []});
+  const label = 'Egyptian Cities';
+  const bgColors = {
+    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    highlightColor: 'rgba(255, 99, 132, 0.9)',
+  };
+
 
   useEffect(() => {
 
     const fetchData = async () => {
+
       const url = 'https://gist.githubusercontent.com/low-sky/bec36274c4bf28619e503e2ae6a59d3a/raw/5dbc063e0a954a88df283a046f996c586ad20fb6/EgyptCities.csv';
-      const label = 'Egyptian Cities';
-      const backgroundColor = 'rgba(255, 99, 132, 0.5)';
 
       const makePlotData = datapoints => {
         // datapoint example:
@@ -40,7 +45,7 @@ export default function App() {
           datasets: [{
             label,
             data,
-            backgroundColor,
+            backgroundColor: data.map(d => bgColors.backgroundColor),
           }]
         });
       };
@@ -55,6 +60,7 @@ export default function App() {
     <div className="App">
       <Plot
         data={plotData}
+        bgColors={bgColors}
       />
     </div>
   );
