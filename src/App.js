@@ -3,6 +3,7 @@ import { Plot } from "./components/Plot";
 import * as d3 from "d3";
 import "./index.css";
 import { radiusFromArea } from "./Utils";
+import uruguayCities from "./assets/UruguayCities.csv"
 
 export default function App() {
   
@@ -50,7 +51,7 @@ export default function App() {
         });
       };
 
-      await d3.csv(url).then(makePlotData);
+      await d3.csv(uruguayCities).then(makePlotData);
     };
     
     fetchData();
