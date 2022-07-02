@@ -8,7 +8,7 @@ import uruguayCities from "./assets/UruguayCities.csv"
 export default function App() {
   
   const [plotData, setPlotData] = useState({datasets: []});
-  const label = 'Egyptian Cities';
+  const label = 'Uruguayan Cities';
   const bgColors = {
     backgroundColor: 'rgba(255, 99, 132, 0.5)',
     highlightColor: 'rgba(255, 99, 132, 0.9)',
@@ -53,7 +53,7 @@ export default function App() {
 
       await d3.csv(uruguayCities).then(makePlotData);
     };
-    
+
     fetchData();
   }, []);
 
