@@ -58,26 +58,36 @@ export const Plot = ({ data, bgColors }) => {
 
     const chart = evt.chart;
     const datasets = chart.data.datasets;
+
+    // if clicking the plot between cities, clear selected cities
     if (!elm.length) {
       return syncSelected([], chart);
     }
 
     const { index, datasetIndex } = elm[0];
     const isSelected = datasets[datasetIndex].data[index].selected;
+    const item = [datasetIndex, index];
 
+    // if clicking a selected city, remove from selected array
     if (isSelected) {
-      const item = [datasetIndex, index];
       const selectedArr = selected.filter(c => !c.every((value, index) => value === item[index]));
       return syncSelected(selectedArr, chart);
     }
-      
-    selected.push([datasetIndex, index]);
 
-    if (selected.length < 2) {
+
+    // if this is the first city selected, add to selected array and return
+    if (!selected.length) {
+      selected.push(item);
       return syncSelected(selected, chart);
     }
 
-    while (selected.length > 2) selected.shift();
+
+    // if another city has been selected,
+    //  remove any cities after the first one from selected array
+    //  add this city
+    //  draw line between cities
+    while (selected.length > 1) selected.pop();
+    selected.push(item);
     syncSelected(selected, chart);
 
     drawLineBetweenCities(selected, chart);
