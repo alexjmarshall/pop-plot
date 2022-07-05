@@ -8,17 +8,18 @@ import uruguayCities from "./assets/UruguayCities.csv"
 export default function App() {
   
   const [plotData, setPlotData] = useState({datasets: []});
-  const label = 'Uruguayan Cities';
   const bgColors = {
     backgroundColor: 'rgba(255, 99, 132, 0.5)',
     highlightColor: 'rgba(255, 99, 132, 0.9)',
   };
 
-
   useEffect(() => {
 
     const fetchData = async () => {
 
+      const label = 'Uruguayan Cities';
+      const bgColor = bgColors.backgroundColor;
+      const areaToPixelsFactor = 30;
       const url = 'https://gist.githubusercontent.com/low-sky/bec36274c4bf28619e503e2ae6a59d3a/raw/5dbc063e0a954a88df283a046f996c586ad20fb6/EgyptCities.csv';
 
       const makePlotData = datapoints => {
@@ -30,7 +31,7 @@ export default function App() {
         //  population: "19787000"
         // }
 
-        const radiusInPixelsFromPop = (pop) => radiusFromArea(pop) / 50;
+        const radiusInPixelsFromPop = (pop) => Math.round(radiusFromArea(pop) / areaToPixelsFactor);
 
         const data = datapoints
           .filter(p => Number(p.lng) && Number(p.lat) && Number(p.population))
@@ -46,7 +47,7 @@ export default function App() {
           datasets: [{
             label,
             data,
-            backgroundColor: data.map(d => bgColors.backgroundColor),
+            backgroundColor: data.map(d => bgColor),
           }]
         });
       };
