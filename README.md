@@ -1,5 +1,7 @@
 # Population Data Plot
-Link: https://alexjmarshall.github.io/pop-plot/
+Plots city data (population, latitude and longitude) in a bubble chart with bubble size proportional to city population. Calculates distance between selected cities.
+
+https://alexjmarshall.github.io/pop-plot/
 ## Requirements
 The plot should be interactive allowing the following user interactions:
 
